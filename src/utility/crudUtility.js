@@ -1,4 +1,4 @@
-import { collection, doc, getDocs } from "firebase/firestore"
+import { addDoc, collection, getDocs, serverTimestamp } from "firebase/firestore"
 import { db } from "./firebaseApp"
 
 
@@ -8,4 +8,11 @@ export const readCategories=async (setCategories)=>{
     let arr=[]
     docs.forEach(doc=>arr.push(doc.data()))
     setCategories(arr)
+}
+
+export const addPost=async (formData)=>{
+    console.log(formData);
+    const collectionRef=collection(db,'posts')
+    const newItem={...formData,timestamp:serverTimestamp()}
+    const newDocRef=await addDoc(collectionRef,newItem)
 }

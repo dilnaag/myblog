@@ -13,6 +13,8 @@ import { useState } from "react";
 import { TextEditor } from "../components/TextEditor";
 import { FileInput } from "../components/FileInput";
 import Button from '@mui/material/Button';
+import { uploadFile } from "../utility/uploadFile";
+import { addPost } from "../utility/crudUtility";
 
 
 export const AddPost = () => {
@@ -30,6 +32,21 @@ export const AddPost = () => {
 
     const handelSubmit=async (e)=>{
         e.preventDefault()
+        try{
+          const photoUrl=await uploadFile(image)
+          await addPost({
+            title,
+            category:categ,
+            photoUrl,
+            author:user.displayName,
+            userId:user.uid,
+            description:story,
+            likes:[],
+            likesCount:0
+          })
+        }catch(err){
+          console.log(err);
+        }
         
     }
 
